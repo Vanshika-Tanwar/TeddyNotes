@@ -11,6 +11,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.teddynotes.navigation.NavGraph
+import com.example.teddynotes.ui.splash.SplashScreen
 import com.example.teddynotes.ui.theme.TeddyNotesTheme
 
 class MainActivity : ComponentActivity() {
@@ -19,9 +21,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             TeddyNotesTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) {
-
-                }
+                NavGraph()
             }
         }
     }

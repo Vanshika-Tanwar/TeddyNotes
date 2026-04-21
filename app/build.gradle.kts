@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
+
+    id("org.jetbrains.kotlin.plugin.serialization") version "2.2.0"
 }
 
 android {
@@ -55,4 +57,14 @@ dependencies {
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
+
+    //lottie animation dependency
+    implementation("com.airbnb.android:lottie-compose:6.7.1")
+
+    //navigation
+    implementation("androidx.navigation:navigation-compose:2.8.0")
+    //serialization
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.0")
+
+
 }
