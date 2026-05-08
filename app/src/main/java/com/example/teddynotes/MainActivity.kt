@@ -11,6 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.example.teddynotes.navigation.NavGraph
 import com.example.teddynotes.ui.splash.SplashScreen
 import com.example.teddynotes.ui.theme.TeddyNotesTheme
@@ -19,6 +20,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        installSplashScreen().setKeepOnScreenCondition { false }
         setContent {
             TeddyNotesTheme {
                 NavGraph()

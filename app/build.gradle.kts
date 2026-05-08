@@ -66,5 +66,11 @@ dependencies {
     //serialization
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.0")
 
+   // splashscreen
+    implementation("androidx.core:core-splashscreen:1.0.0")
+
+    //extended icons
+    implementation("androidx.compose.material:material-icons-extended")
+
 
 }
