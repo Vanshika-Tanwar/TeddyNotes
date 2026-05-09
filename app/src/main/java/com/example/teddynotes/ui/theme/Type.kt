@@ -37,3 +37,9 @@ val LobsterTwo = FontFamily(
     Font(R.font.lobster_two_regular),
     Font(R.font.lobster_two_bold, FontWeight.Bold)
 )
+
+val Nunito = FontFamily(
+    Font(R.font.nunito_regular),
+    Font(R.font.nunito_medium, FontWeight.Medium),
+    Font(R.font.nunito_bold, FontWeight.Bold)
+)

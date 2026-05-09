@@ -3,6 +3,7 @@ package com.example.teddynotes.ui.home
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
@@ -28,13 +29,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.teddynotes.R
+import com.example.teddynotes.navigation.NavRoutes
 import com.example.teddynotes.ui.theme.BackgroundGreen
 import com.example.teddynotes.ui.theme.BearPrimary
 import com.example.teddynotes.ui.theme.LobsterTwo
@@ -59,7 +58,7 @@ fun HomeScreen(navController: NavController) {
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterHorizontally)
             ) {
-                HomeCard {
+                HomeCard (onClick = {navController.navigate((NavRoutes.NotesList))}){
                     Image(
                         painter = painterResource(R.drawable.user_dp),
                         contentDescription = "user dp",
@@ -71,7 +70,7 @@ fun HomeScreen(navController: NavController) {
                     )
 
                 }
-                HomeCard {
+                HomeCard(onClick = {navController.navigate((NavRoutes.NotesList))}){
                     Icon(
                         imageVector = Icons.Outlined.Notes,
                         contentDescription = "notes list",
@@ -86,7 +85,9 @@ fun HomeScreen(navController: NavController) {
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterHorizontally)
             ) {
-                HomeCard {
+                HomeCard(onClick = {
+                    navController.navigate(NavRoutes.ChatBotScreen)
+                }) {
                     Image(
                         painter = painterResource(R.drawable.bear_logo),
                         contentDescription = "chatbot",
@@ -95,10 +96,12 @@ fun HomeScreen(navController: NavController) {
                     )
 
                 }
-                HomeCard {
+                HomeCard(onClick = {
+                    navController.navigate(NavRoutes.NoteScreen)
+                }) {
                     Icon(
                         imageVector = Icons.Outlined.AddCircleOutline,
-                        contentDescription = "notes list",
+                        contentDescription = "add note",
                         modifier = Modifier.fillMaxSize(),
                         tint = BearPrimary
                     )
@@ -114,12 +117,14 @@ fun HomeScreen(navController: NavController) {
 
 @Composable
 fun HomeCard(
+    onClick: () -> Unit = {},
     content: @Composable BoxScope.() -> Unit
 ) {
     Box(
         modifier = Modifier
             .size(160.dp)
             .clip(RoundedCornerShape(24.dp))
+            .clickable(onClick = onClick)
             .background(NoteBeige)
             .border(
                 1.dp,

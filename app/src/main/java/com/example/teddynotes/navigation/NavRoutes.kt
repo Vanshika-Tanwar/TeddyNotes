@@ -9,4 +9,16 @@ sealed class NavRoutes{
     object SplashScreen : NavRoutes()
     @Serializable
     object HomeScreen : NavRoutes()
+
+    @Serializable
+    object NoteScreen : NavRoutes()
+
+    @Serializable
+    object ChatBotScreen : NavRoutes()
+
+    @Serializable
+    object NotesList : NavRoutes()
+
+    @Serializable
+    object ProfileScreen : NavRoutes()
 }
