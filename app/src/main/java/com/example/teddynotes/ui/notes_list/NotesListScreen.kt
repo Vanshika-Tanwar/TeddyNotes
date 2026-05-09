@@ -54,7 +54,7 @@ fun NotesListScreen(navController: NavController) {
                     .padding(horizontal = 16.dp)
                     .padding(top = 8.dp, bottom = 20.dp)
                     .clip(shape = RoundedCornerShape(24.dp))
-                    .background(SoftWhite)
+                    .background(SoftWhite.copy(alpha = 0.65f))
                     .padding(16.dp)
                     .fillMaxSize()
             ) {

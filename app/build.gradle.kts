@@ -3,6 +3,8 @@ plugins {
     alias(libs.plugins.kotlin.compose)
 
     id("org.jetbrains.kotlin.plugin.serialization") version "2.2.0"
+
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -71,6 +73,10 @@ dependencies {
 
     //extended icons
     implementation("androidx.compose.material:material-icons-extended")
+
+    //room
+    implementation("androidx.room:room-runtime:2.8.4")
+    ksp("androidx.room:room-compiler:2.5.0")
 
 
 }
