@@ -3,10 +3,11 @@ package com.example.teddynotes.navigation
 import kotlinx.serialization.Serializable
 
 @Serializable
-sealed class NavRoutes{
+sealed class NavRoutes {
 
     @Serializable
     object SplashScreen : NavRoutes()
+
     @Serializable
     object HomeScreen : NavRoutes()
 
@@ -17,7 +18,7 @@ sealed class NavRoutes{
     object ChatBotScreen : NavRoutes()
 
     @Serializable
-    object NotesList : NavRoutes()
+    object NotesListScreen : NavRoutes()
 
     @Serializable
     object ProfileScreen : NavRoutes()

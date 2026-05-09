@@ -34,7 +34,6 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.teddynotes.R
 import com.example.teddynotes.navigation.NavRoutes
-import com.example.teddynotes.ui.common.TeddyTopBar
 import com.example.teddynotes.ui.theme.BackgroundGreen
 import com.example.teddynotes.ui.theme.BearPrimary
 import com.example.teddynotes.ui.theme.LobsterTwo
@@ -59,7 +58,7 @@ fun HomeScreen(navController: NavController) {
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterHorizontally)
             ) {
-                HomeCard (onClick = {navController.navigate((NavRoutes.NotesList))}){
+                HomeCard(onClick = { navController.navigate((NavRoutes.ProfileScreen)) }) {
                     Image(
                         painter = painterResource(R.drawable.user_dp),
                         contentDescription = "user dp",
@@ -71,7 +70,7 @@ fun HomeScreen(navController: NavController) {
                     )
 
                 }
-                HomeCard(onClick = {navController.navigate((NavRoutes.NotesList))}){
+                HomeCard(onClick = { navController.navigate((NavRoutes.NotesListScreen)) }) {
                     Icon(
                         imageVector = Icons.Outlined.Notes,
                         contentDescription = "notes list",

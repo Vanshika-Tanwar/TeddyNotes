@@ -1,6 +1,5 @@
 package com.example.teddynotes.ui.profile
 
-import android.R.attr.onClick
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -25,10 +24,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.teddynotes.R
+import com.example.teddynotes.navigation.NavRoutes
 import com.example.teddynotes.ui.common.TeddyTopBar
 import com.example.teddynotes.ui.theme.BackgroundGreen
 import com.example.teddynotes.ui.theme.BearPrimary
@@ -38,16 +38,15 @@ import com.example.teddynotes.ui.theme.Nunito
 import com.example.teddynotes.ui.theme.PrimaryTextBrown
 import com.example.teddynotes.ui.theme.SoftWhite
 
-@Preview(showBackground = true, showSystemUi = true)
 @Composable
-fun ProfileScreen(/*navController: NavController*/) {
+fun ProfileScreen(navController: NavController) {
     Scaffold(containerColor = BackgroundGreen) { innerPadding ->
         Column(
             modifier = Modifier
                 .padding(innerPadding)
                 .fillMaxSize()
         ) {
-            TeddyTopBar(onBack = {/*navController.popBackStack() */ })
+            TeddyTopBar(onBack = { navController.popBackStack() })
             Box(
                 modifier = Modifier
                     .padding(horizontal = 16.dp)
@@ -94,7 +93,7 @@ fun ProfileScreen(/*navController: NavController*/) {
                     InfoCard("Mood This Week: 😊 Happy")
 
                     InfoCard("View all notes", onClick = {
-                        /*navController.navigate(NavRoutes.NotesList)*/
+                        navController.navigate(NavRoutes.NotesListScreen)
                     })
 
                     Button(
@@ -103,7 +102,12 @@ fun ProfileScreen(/*navController: NavController*/) {
                         shape = RoundedCornerShape(16.dp),
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        Text("DELETE ACCOUNT? 🥲", fontFamily = Nunito, color = PrimaryTextBrown, fontSize = 24.sp)
+                        Text(
+                            "DELETE ACCOUNT? 🥲",
+                            fontFamily = Nunito,
+                            color = PrimaryTextBrown,
+                            fontSize = 24.sp
+                        )
                     }
 
                 }

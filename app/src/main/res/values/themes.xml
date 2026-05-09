@@ -3,5 +3,9 @@
     <style name="Theme.TeddyNotes" parent="Theme.SplashScreen">
         <item name="android:windowBackground">@color/background_green</item>
         <item name="windowSplashScreenBackground">@color/background_green</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowNoTitle">true</item>
     </style>
+
 </resources>

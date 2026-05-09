@@ -26,7 +26,7 @@ fun TeddyTopBar(onBack: () -> Unit, showSearch: Boolean = false, onSearch: () ->
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        IconButton(onClick = {onBack}) {
+        IconButton(onClick = onBack) {
             Icon(
                 imageVector = Icons.Default.ArrowBack,
                 tint = BearDeep,
@@ -35,7 +35,7 @@ fun TeddyTopBar(onBack: () -> Unit, showSearch: Boolean = false, onSearch: () ->
             )
         }
         if(showSearch){
-            IconButton(onClick = {onSearch}) {
+            IconButton(onClick = onSearch) {
                 Icon(
                     imageVector = Icons.Default.Search,
                     tint = BearDeep,
