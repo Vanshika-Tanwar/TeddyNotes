@@ -34,6 +34,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.teddynotes.R
 import com.example.teddynotes.navigation.NavRoutes
+import com.example.teddynotes.ui.common.TeddyTopBar
 import com.example.teddynotes.ui.theme.BackgroundGreen
 import com.example.teddynotes.ui.theme.BearPrimary
 import com.example.teddynotes.ui.theme.LobsterTwo

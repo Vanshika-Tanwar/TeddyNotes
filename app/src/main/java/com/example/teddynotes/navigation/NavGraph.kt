@@ -4,9 +4,9 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.teddynotes.chatbot.ChatBotScreen
-import com.example.teddynotes.notes_list.NotesListScreen
-import com.example.teddynotes.profile.ProfileScreen
+import com.example.teddynotes.ui.chatbot.ChatBotScreen
+import com.example.teddynotes.ui.notes_list.NotesListScreen
+import com.example.teddynotes.ui.profile.ProfileScreen
 import com.example.teddynotes.ui.home.HomeScreen
 import com.example.teddynotes.ui.notes.NoteScreen
 import com.example.teddynotes.ui.splash.SplashScreen
