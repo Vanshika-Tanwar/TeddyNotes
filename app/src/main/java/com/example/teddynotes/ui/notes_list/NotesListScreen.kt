@@ -13,12 +13,13 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.DeleteOutline
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -26,22 +27,19 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.teddynotes.model.Mood
 import com.example.teddynotes.model.Note
 import com.example.teddynotes.ui.common.TeddyTopBar
 import com.example.teddynotes.ui.theme.BackgroundGreen
 import com.example.teddynotes.ui.theme.Nunito
 import com.example.teddynotes.ui.theme.PrimaryTextBrown
 import com.example.teddynotes.ui.theme.SoftWhite
+import com.example.teddynotes.viewmodel.NoteViewModel
 
 @Composable
-fun NotesListScreen(navController: NavController) {
+fun NotesListScreen(navController: NavController, noteViewModel: NoteViewModel) {
 
-    val notes :List<Note> = listOf(
-        Note(1, "Today was good", "08/05/26", "content", Mood.HAPPY),
-        Note(2, "Feeling tired", "07/05/26", "content", Mood.SAD),
-        Note(3, "Abba Jabba Tabba blah blah blah could be a long title", "06/05/26", "content", Mood.CALM)
-    )
+    val notes by noteViewModel.allNotes.collectAsState()
+
     Scaffold(containerColor = BackgroundGreen) { innerPadding ->
         Column(
             modifier = Modifier
@@ -63,7 +61,7 @@ fun NotesListScreen(navController: NavController) {
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     items(notes) { note ->
-                        NoteCard(note = note, onDelete = {})
+                        NoteCard(note = note, onDelete = {noteViewModel.deleteNote(note)})
                     }
                 }
 
@@ -81,12 +79,12 @@ fun NoteCard(note: Note, onDelete: () -> Unit) {
             .clip(RoundedCornerShape(24.dp))
             .background(note.mood.color)
             .padding(horizontal = 16.dp, vertical = 12.dp)
-    ){
+    ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
-        ){
+        ) {
             Text(
                 text = note.title,
                 fontFamily = Nunito,
@@ -97,10 +95,7 @@ fun NoteCard(note: Note, onDelete: () -> Unit) {
                 modifier = Modifier.weight(1f)
             )
             Text(
-                text = note.date,
-                fontFamily = Nunito,
-                fontSize = 12.sp,
-                color = PrimaryTextBrown
+                text = note.date, fontFamily = Nunito, fontSize = 12.sp, color = PrimaryTextBrown
             )
             IconButton(onClick = onDelete) {
                 Icon(

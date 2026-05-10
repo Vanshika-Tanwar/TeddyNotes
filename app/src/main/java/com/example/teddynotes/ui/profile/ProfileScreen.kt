@@ -20,6 +20,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -37,9 +39,13 @@ import com.example.teddynotes.ui.theme.NoteBeige
 import com.example.teddynotes.ui.theme.Nunito
 import com.example.teddynotes.ui.theme.PrimaryTextBrown
 import com.example.teddynotes.ui.theme.SoftWhite
+import com.example.teddynotes.viewmodel.NoteViewModel
 
 @Composable
-fun ProfileScreen(navController: NavController) {
+fun ProfileScreen(navController: NavController, noteViewModel: NoteViewModel) {
+
+    val notes by noteViewModel.allNotes.collectAsState()
+
     Scaffold(containerColor = BackgroundGreen) { innerPadding ->
         Column(
             modifier = Modifier
@@ -89,7 +95,7 @@ fun ProfileScreen(navController: NavController) {
                     InfoCard("Name: Vanshika")
                     InfoCard("Email: xyz@gmail.com")
                     InfoCard("Age: 21")
-                    InfoCard("Total Active Days: 126 days")
+                    InfoCard("Total Active Days: ${notes.size} days")
                     InfoCard("Mood This Week: 😊 Happy")
 
                     InfoCard("View all notes", onClick = {

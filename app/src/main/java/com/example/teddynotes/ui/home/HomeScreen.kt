@@ -24,6 +24,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -40,9 +42,12 @@ import com.example.teddynotes.ui.theme.LobsterTwo
 import com.example.teddynotes.ui.theme.NoteBeige
 import com.example.teddynotes.ui.theme.PrimaryTextBrown
 import com.example.teddynotes.ui.theme.SoftWhite
+import com.example.teddynotes.viewmodel.NoteViewModel
 
 @Composable
-fun HomeScreen(navController: NavController) {
+fun HomeScreen(navController: NavController, noteViewModel: NoteViewModel) {
+    val notes by noteViewModel.allNotes.collectAsState()
+
     val user = "Vanshika"
     Scaffold(containerColor = BackgroundGreen) { innerPadding ->
         Column(

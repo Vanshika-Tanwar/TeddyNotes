@@ -76,7 +76,6 @@ dependencies {
 
     //room
     implementation("androidx.room:room-runtime:2.8.4")
-    ksp("androidx.room:room-compiler:2.5.0")
-
+    ksp("androidx.room:room-compiler:2.8.4")
 
 }

@@ -34,15 +34,17 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.teddynotes.model.Mood
+import com.example.teddynotes.model.Note
 import com.example.teddynotes.ui.common.TeddyTopBar
 import com.example.teddynotes.ui.theme.BackgroundGreen
 import com.example.teddynotes.ui.theme.BearDeep
 import com.example.teddynotes.ui.theme.NoteBeige
 import com.example.teddynotes.ui.theme.Nunito
 import com.example.teddynotes.ui.theme.PrimaryTextBrown
+import com.example.teddynotes.viewmodel.NoteViewModel
 
 @Composable
-fun NoteScreen(navController: NavController) {
+fun NoteScreen(navController: NavController, noteViewModel: NoteViewModel) {
     var showDialog by remember { mutableStateOf(true) }
     var selectedMood by remember { mutableStateOf<Mood?>(null) }
     var title by remember { mutableStateOf("") }
@@ -66,7 +68,8 @@ fun NoteScreen(navController: NavController) {
         ) {
             TeddyTopBar(onBack = { navController.popBackStack() })
             Box(
-                modifier = Modifier.padding(horizontal = 16.dp)
+                modifier = Modifier
+                    .padding(horizontal = 16.dp)
                     .padding(top = 8.dp, bottom = 20.dp)
                     .clip(shape = RoundedCornerShape(24.dp))
                     .background(NoteBeige)
@@ -148,8 +151,29 @@ fun NoteScreen(navController: NavController) {
                         )
                         Button(
                             onClick = {
-                                /* save this note haha, for now lets navigate back to HomeScreen*/
-                                navController.popBackStack()
+                                //save logic
+//                                if(title.isNotBlank() && selectedMood!=null){
+//                                    noteViewModel.addNote(
+//                                        Note(
+//                                            title = title,
+//                                            content = content,
+//                                            date = date,
+//                                            mood = selectedMood!!
+//                                        )
+//                                    )
+//                                } but better use let ->
+                                selectedMood?.let {
+                                    mood ->
+                                    noteViewModel.addNote(
+                                        Note(
+                                            title = title,
+                                            content = content,
+                                            date = date,
+                                            mood = mood
+                                        )
+                                    )
+                                    navController.popBackStack()
+                                }
                             },
                             colors = ButtonDefaults.buttonColors(containerColor = BearDeep),
                             shape = RoundedCornerShape(24.dp)
