@@ -7,6 +7,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
 import com.example.teddynotes.ui.chatbot.ChatBotScreen
 import com.example.teddynotes.ui.notes_list.NotesListScreen
 import com.example.teddynotes.ui.profile.ProfileScreen
@@ -36,8 +37,9 @@ fun NavGraph(){
             HomeScreen(navController, noteViewModel)
         }
 
-        composable<NavRoutes.NoteScreen>{
-            NoteScreen(navController, noteViewModel)
+        composable<NavRoutes.NoteScreen>{ backStackEntry ->
+            val route = backStackEntry.toRoute<NavRoutes.NoteScreen>()
+            NoteScreen(navController, noteViewModel, route.date)
         }
 
         composable<NavRoutes.ChatBotScreen>{

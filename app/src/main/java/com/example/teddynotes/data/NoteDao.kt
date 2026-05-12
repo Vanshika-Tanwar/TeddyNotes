@@ -16,11 +16,14 @@ interface NoteDao {
     @Delete
     suspend fun deleteNote(note : Note)
 
-    @Query("SELECT * FROM notes ORDER BY id DESC")
+    @Query("SELECT * FROM notes ORDER BY date DESC")
     fun getAllNotes() : Flow<List<Note>>
 
     @Query("SELECT * FROM notes WHERE date = :date LIMIT 1")
     suspend fun getNoteByDate(date:String) : Note?
+
+    @Query("SELECT * FROM notes WHERE date = :date")
+    suspend fun getNoteById(date:String) : Note?
 
 
 }

@@ -1,6 +1,7 @@
 package com.example.teddynotes.ui.notes
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,6 +21,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -44,8 +46,8 @@ import com.example.teddynotes.ui.theme.PrimaryTextBrown
 import com.example.teddynotes.viewmodel.NoteViewModel
 
 @Composable
-fun NoteScreen(navController: NavController, noteViewModel: NoteViewModel) {
-    var showDialog by remember { mutableStateOf(true) }
+fun NoteScreen(navController: NavController, noteViewModel: NoteViewModel, noteDate: String = "") {
+    var showDialog by remember { mutableStateOf(noteDate.isEmpty()) }
     var selectedMood by remember { mutableStateOf<Mood?>(null) }
     var title by remember { mutableStateOf("") }
     val date = remember {
@@ -53,11 +55,31 @@ fun NoteScreen(navController: NavController, noteViewModel: NoteViewModel) {
             .format(java.time.format.DateTimeFormatter.ofPattern("dd MMM yyyy"))
     }
     var content by remember { mutableStateOf("") }
+    val isToday = date == noteDate || noteDate.isEmpty()
+
+    LaunchedEffect(noteDate) {
+        if (noteDate.isNotEmpty()) {
+            val note = noteViewModel.getNoteByDate(noteDate)
+            note?.let {
+                title = it.title
+                content = it.content
+                selectedMood = it.mood
+                showDialog = false
+            }
+        }
+    }
+
     if (showDialog) {
         MoodPickerDialog(onMoodSelected = { mood ->
             selectedMood = mood
             showDialog = false
-        }, onDismissRequest = { navController.popBackStack() }
+        }, onDismissRequest = {
+            if (selectedMood != null) {
+                showDialog = false
+            } else {
+                navController.popBackStack()
+            }
+        }
         )
     }
     Scaffold(containerColor = BackgroundGreen) { innerPadding ->
@@ -84,7 +106,7 @@ fun NoteScreen(navController: NavController, noteViewModel: NoteViewModel) {
                         //title+date
                         BasicTextField(
                             value = title,
-                            onValueChange = { title = it },
+                            onValueChange = { if (isToday) title = it },
                             textStyle = TextStyle(
                                 fontSize = 24.sp,
                                 color = PrimaryTextBrown,
@@ -106,7 +128,8 @@ fun NoteScreen(navController: NavController, noteViewModel: NoteViewModel) {
                         )
 
                         Text(
-                            text = date, fontFamily = Nunito,
+                            text = noteDate.ifEmpty { date },
+                            fontFamily = Nunito,
                             fontSize = 14.sp,
                             color = PrimaryTextBrown
                         )
@@ -116,7 +139,7 @@ fun NoteScreen(navController: NavController, noteViewModel: NoteViewModel) {
                     Spacer(Modifier.height(8.dp))
                     TextField(
                         value = content,
-                        onValueChange = { content = it },
+                        onValueChange = { if (isToday) content = it },
                         placeholder = {
                             Text(
                                 "Write your thoughts here...",
@@ -147,11 +170,15 @@ fun NoteScreen(navController: NavController, noteViewModel: NoteViewModel) {
                         //emoji+save button
                         Text(
                             text = selectedMood?.emoji ?: "🟡",
-                            fontSize = 36.sp
+                            fontSize = 36.sp,
+                            modifier = if (isToday) Modifier.clickable {
+                                showDialog = true
+                            } else Modifier
                         )
-                        Button(
-                            onClick = {
-                                //save logic
+                        if (isToday) {
+                            Button(
+                                onClick = {
+                                    //save logic
 //                                if(title.isNotBlank() && selectedMood!=null){
 //                                    noteViewModel.addNote(
 //                                        Note(
@@ -162,29 +189,31 @@ fun NoteScreen(navController: NavController, noteViewModel: NoteViewModel) {
 //                                        )
 //                                    )
 //                                } but better use let ->
-                                selectedMood?.let {
-                                    mood ->
-                                    noteViewModel.addNote(
-                                        Note(
-                                            title = title,
-                                            content = content,
-                                            date = date,
-                                            mood = mood
-                                        )
-                                    )
-                                    navController.popBackStack()
-                                }
-                            },
-                            colors = ButtonDefaults.buttonColors(containerColor = BearDeep),
-                            shape = RoundedCornerShape(24.dp)
-                        ) {
-                            Text(
-                                "SAVE",
-                                fontFamily = Nunito,
-                                fontWeight = FontWeight.Medium,
-                                color = NoteBeige,
-                                fontSize = 20.sp
-                            )
+                                    selectedMood?.let { mood ->
+                                        if (title.isNotBlank()) {
+                                            noteViewModel.addNote(
+                                                Note(
+                                                    title = title,
+                                                    content = content,
+                                                    date = date,
+                                                    mood = mood
+                                                )
+                                            )
+                                            navController.popBackStack()
+                                        }
+                                    }
+                                },
+                                colors = ButtonDefaults.buttonColors(containerColor = BearDeep),
+                                shape = RoundedCornerShape(24.dp)
+                            ) {
+                                Text(
+                                    "SAVE",
+                                    fontFamily = Nunito,
+                                    fontWeight = FontWeight.Medium,
+                                    color = NoteBeige,
+                                    fontSize = 20.sp
+                                )
+                            }
                         }
                     }
                 }

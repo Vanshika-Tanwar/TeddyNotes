@@ -12,7 +12,7 @@ sealed class NavRoutes {
     object HomeScreen : NavRoutes()
 
     @Serializable
-    object NoteScreen : NavRoutes()
+    data class NoteScreen(val date: String = "") : NavRoutes()
 
     @Serializable
     object ChatBotScreen : NavRoutes()

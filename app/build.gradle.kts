@@ -1,9 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
-
-    id("org.jetbrains.kotlin.plugin.serialization") version "2.2.0"
-
+    kotlin("plugin.serialization")
     id("com.google.devtools.ksp")
 }
 
@@ -67,6 +65,8 @@ dependencies {
     implementation("androidx.navigation:navigation-compose:2.8.0")
     //serialization
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.0")
+    //coroutine
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
 
    // splashscreen
     implementation("androidx.core:core-splashscreen:1.0.0")

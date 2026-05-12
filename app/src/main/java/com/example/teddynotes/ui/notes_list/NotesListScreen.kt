@@ -1,6 +1,7 @@
 package com.example.teddynotes.ui.notes_list
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,6 +21,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -28,6 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.teddynotes.model.Note
+import com.example.teddynotes.navigation.NavRoutes
 import com.example.teddynotes.ui.common.TeddyTopBar
 import com.example.teddynotes.ui.theme.BackgroundGreen
 import com.example.teddynotes.ui.theme.Nunito
@@ -39,6 +44,14 @@ import com.example.teddynotes.viewmodel.NoteViewModel
 fun NotesListScreen(navController: NavController, noteViewModel: NoteViewModel) {
 
     val notes by noteViewModel.allNotes.collectAsState()
+    var search by remember { mutableStateOf("") }
+    var isSearchActive by remember { mutableStateOf(false) }
+    val filteredNotes = if (search.isBlank()) notes else notes.filter {
+        it.title.contains(
+            search,
+            ignoreCase = true
+        )
+    }
 
     Scaffold(containerColor = BackgroundGreen) { innerPadding ->
         Column(
@@ -46,7 +59,18 @@ fun NotesListScreen(navController: NavController, noteViewModel: NoteViewModel) 
                 .padding(innerPadding)
                 .fillMaxSize()
         ) {
-            TeddyTopBar(onBack = { navController.popBackStack() }, showSearch = true)
+            TeddyTopBar(
+                onBack = { navController.popBackStack() },
+                showSearch = true,
+                onSearch = {
+                    isSearchActive = !isSearchActive
+                    if (!isSearchActive) search = ""
+                },
+                isSearchActive = isSearchActive,
+                searchQuery = search,
+                onSearchQueryChange = {search = it}
+            )
+
             Box(
                 modifier = Modifier
                     .padding(horizontal = 16.dp)
@@ -60,8 +84,12 @@ fun NotesListScreen(navController: NavController, noteViewModel: NoteViewModel) 
                     modifier = Modifier.fillMaxSize(),
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    items(notes) { note ->
-                        NoteCard(note = note, onDelete = {noteViewModel.deleteNote(note)})
+                    items(filteredNotes) { note ->
+                        NoteCard(
+                            note = note,
+                            onDelete = { noteViewModel.deleteNote(note) },
+                            onClick = { navController.navigate(NavRoutes.NoteScreen(note.date)) }
+                        )
                     }
                 }
 
@@ -72,12 +100,13 @@ fun NotesListScreen(navController: NavController, noteViewModel: NoteViewModel) 
 }
 
 @Composable
-fun NoteCard(note: Note, onDelete: () -> Unit) {
+fun NoteCard(note: Note, onDelete: () -> Unit, onClick: () -> Unit) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(24.dp))
             .background(note.mood.color)
+            .clickable { onClick() }
             .padding(horizontal = 16.dp, vertical = 12.dp)
     ) {
         Row(

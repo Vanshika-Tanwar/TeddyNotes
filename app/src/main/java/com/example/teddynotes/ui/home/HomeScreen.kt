@@ -26,6 +26,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -36,6 +37,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.teddynotes.R
 import com.example.teddynotes.navigation.NavRoutes
+import com.example.teddynotes.ui.home.HomeCard
 import com.example.teddynotes.ui.theme.BackgroundGreen
 import com.example.teddynotes.ui.theme.BearPrimary
 import com.example.teddynotes.ui.theme.LobsterTwo
@@ -43,11 +45,13 @@ import com.example.teddynotes.ui.theme.NoteBeige
 import com.example.teddynotes.ui.theme.PrimaryTextBrown
 import com.example.teddynotes.ui.theme.SoftWhite
 import com.example.teddynotes.viewmodel.NoteViewModel
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 
 @Composable
 fun HomeScreen(navController: NavController, noteViewModel: NoteViewModel) {
     val notes by noteViewModel.allNotes.collectAsState()
-
+    val coroutineScope = rememberCoroutineScope()
     val user = "Vanshika"
     Scaffold(containerColor = BackgroundGreen) { innerPadding ->
         Column(
@@ -102,7 +106,19 @@ fun HomeScreen(navController: NavController, noteViewModel: NoteViewModel) {
 
                 }
                 HomeCard(onClick = {
-                    navController.navigate(NavRoutes.NoteScreen)
+                    val today = java.time.LocalDate.now()
+                        .format(java.time.format.DateTimeFormatter.ofPattern("dd MMM yyyy"))
+
+                    coroutineScope.launch {
+                        val existingNote = noteViewModel.getNoteByDate(today)
+                        if (existingNote != null) {
+                            navController.navigate(NavRoutes.NoteScreen(existingNote.date))
+                        } else {
+                            navController.navigate(NavRoutes.NoteScreen())
+
+                        }
+                    }
+
                 }) {
                     Icon(
                         imageVector = Icons.Outlined.AddCircleOutline,

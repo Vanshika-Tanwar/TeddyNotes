@@ -38,4 +38,5 @@ class NoteViewModel(application: Application) : AndroidViewModel(application) {
     suspend fun getNoteByDate(date: String) : Note?{
         return repository.getNoteByDate(date)
     }
+
 }

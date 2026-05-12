@@ -13,6 +13,4 @@ class NoteRepository(private val dao : NoteDao) {
     suspend fun delete(note: Note) = dao.deleteNote(note)
 
     suspend fun getNoteByDate(date : String) : Note? = dao.getNoteByDate(date)
-
-
 }
