@@ -27,8 +27,7 @@ android {
         release {
             isMinifyEnabled = false
             proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
             )
         }
     }
@@ -68,7 +67,7 @@ dependencies {
     //coroutine
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
 
-   // splashscreen
+    // splashscreen
     implementation("androidx.core:core-splashscreen:1.0.0")
 
     //extended icons
@@ -77,5 +76,10 @@ dependencies {
     //room
     implementation("androidx.room:room-runtime:2.8.4")
     ksp("androidx.room:room-compiler:2.8.4")
+
+    // Retrofit core library
+    implementation("com.squareup.retrofit2:retrofit:2.11.0")
+    // Retrofit GSON converter (to handle JSON serialization/deserialization)
+    implementation("com.squareup.retrofit2:converter-gson:2.11.0")
 
 }

@@ -1,6 +1,6 @@
 package com.example.teddynotes.repository
 
-import com.example.teddynotes.data.NoteDao
+import com.example.teddynotes.data.local.NoteDao
 import com.example.teddynotes.model.Note
 import kotlinx.coroutines.flow.Flow
 

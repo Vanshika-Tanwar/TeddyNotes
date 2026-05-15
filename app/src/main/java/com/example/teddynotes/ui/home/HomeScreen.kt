@@ -25,7 +25,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -37,23 +37,55 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.teddynotes.R
 import com.example.teddynotes.navigation.NavRoutes
-import com.example.teddynotes.ui.home.HomeCard
 import com.example.teddynotes.ui.theme.BackgroundGreen
 import com.example.teddynotes.ui.theme.BearPrimary
 import com.example.teddynotes.ui.theme.LobsterTwo
 import com.example.teddynotes.ui.theme.NoteBeige
 import com.example.teddynotes.ui.theme.PrimaryTextBrown
 import com.example.teddynotes.ui.theme.SoftWhite
+import com.example.teddynotes.viewmodel.HomeViewModel
 import com.example.teddynotes.viewmodel.NoteViewModel
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 
 @Composable
-fun HomeScreen(navController: NavController, noteViewModel: NoteViewModel) {
-    val notes by noteViewModel.allNotes.collectAsState()
+fun HomeScreen(
+    navController: NavController,
+    noteViewModel: NoteViewModel,
+    homeViewModel: HomeViewModel
+) {
     val coroutineScope = rememberCoroutineScope()
+    var quote = homeViewModel.quote.collectAsState()
     val user = "Vanshika"
+    val morningGreetings = listOf(
+        "Good morning, ${user} ☀️",
+        "A fresh day to breathe and grow 🌿",
+        "Hope today feels gentle for you 🤎"
+    )
+
+    val afternoonGreetings = listOf(
+        "How’s your day going so far? ✨",
+        "Take a little pause for yourself 🌸",
+        "Glad to see you back 🌿"
+    )
+
+    val eveningGreetings = listOf(
+        "Welcome back, ${user} 🌙",
+        "Time to unwind a little 🤎",
+        "Another page for today 📖"
+    )
+
+    val hour = java.time.LocalTime.now().hour
+
+    val greeting = remember {
+        when (hour) {
+            in 5..11 -> morningGreetings.random()
+            in 12..16 -> afternoonGreetings.random()
+            else -> eveningGreetings.random()
+        }
+    }
+
     Scaffold(containerColor = BackgroundGreen) { innerPadding ->
+
         Column(
             modifier = Modifier
                 .padding(innerPadding)
@@ -61,13 +93,13 @@ fun HomeScreen(navController: NavController, noteViewModel: NoteViewModel) {
                 .padding(horizontal = 16.dp),
             verticalArrangement = Arrangement.Center
         ) {
-            TextBlock("Hello ${user}!")
-            Spacer(Modifier.height(32.dp))
+            TextBlock(greeting)
+            Spacer(Modifier.height(48.dp))
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterHorizontally)
             ) {
-                HomeCard(onClick = { navController.navigate((NavRoutes.ProfileScreen)) }) {
+                HomeCard(onClick = { navController.navigate(NavRoutes.ProfileScreen) }) {
                     Image(
                         painter = painterResource(R.drawable.user_dp),
                         contentDescription = "user dp",
@@ -129,8 +161,8 @@ fun HomeScreen(navController: NavController, noteViewModel: NoteViewModel) {
                 }
 
             }
-            Spacer(Modifier.height(32.dp))
-            TextBlock("\"The secret of getting ahead is getting started.\"")
+            Spacer(Modifier.height(48.dp))
+            TextBlock(quote.value)
         }
 
     }
@@ -177,10 +209,9 @@ fun TextBlock(
         Text(
             text = text,
             fontFamily = LobsterTwo,
-            fontSize = 48.sp,
-            lineHeight = 56.sp,
+            fontSize = 34.sp,
+            lineHeight = 40.sp,
             color = PrimaryTextBrown
         )
     }
 }
-

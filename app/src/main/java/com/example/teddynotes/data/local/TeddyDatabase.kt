@@ -1,4 +1,4 @@
-package com.example.teddynotes.data
+package com.example.teddynotes.data.local
 
 import android.content.Context
 import androidx.room.Database

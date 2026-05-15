@@ -8,12 +8,15 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
+import com.example.teddynotes.repository.QuoteRepository
 import com.example.teddynotes.ui.chatbot.ChatBotScreen
 import com.example.teddynotes.ui.notes_list.NotesListScreen
 import com.example.teddynotes.ui.profile.ProfileScreen
 import com.example.teddynotes.ui.home.HomeScreen
 import com.example.teddynotes.ui.notes.NoteScreen
 import com.example.teddynotes.ui.splash.SplashScreen
+import com.example.teddynotes.viewmodel.HomeViewModel
+import com.example.teddynotes.viewmodel.HomeViewModelFactory
 import com.example.teddynotes.viewmodel.NoteViewModel
 import com.example.teddynotes.viewmodel.NoteViewModelFactory
 
@@ -25,6 +28,7 @@ fun NavGraph(){
         factory = NoteViewModelFactory(context.applicationContext as Application)
     )
 
+    val homeViewModel: HomeViewModel = viewModel(factory = HomeViewModelFactory(QuoteRepository()))
     NavHost(
         navController = navController,
         startDestination = NavRoutes.SplashScreen
@@ -34,7 +38,7 @@ fun NavGraph(){
         }
 
         composable<NavRoutes.HomeScreen>{
-            HomeScreen(navController, noteViewModel)
+            HomeScreen(navController, noteViewModel, homeViewModel)
         }
 
         composable<NavRoutes.NoteScreen>{ backStackEntry ->
@@ -43,7 +47,7 @@ fun NavGraph(){
         }
 
         composable<NavRoutes.ChatBotScreen>{
-            ChatBotScreen(navController)
+            ChatBotScreen(navController, noteViewModel)
         }
 
         composable<NavRoutes.NotesListScreen>{

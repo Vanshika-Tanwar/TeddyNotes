@@ -3,7 +3,7 @@ package com.example.teddynotes.viewmodel
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.teddynotes.data.TeddyDatabase
+import com.example.teddynotes.data.local.TeddyDatabase
 import com.example.teddynotes.model.Note
 import com.example.teddynotes.repository.NoteRepository
 import kotlinx.coroutines.flow.SharingStarted

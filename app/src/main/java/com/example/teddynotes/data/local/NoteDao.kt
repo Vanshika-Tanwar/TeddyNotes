@@ -1,4 +1,4 @@
-package com.example.teddynotes.data
+package com.example.teddynotes.data.local
 
 import androidx.room.Dao
 import androidx.room.Delete
