@@ -1,4 +1,4 @@
-package com.example.teddynotes.data
+package com.example.teddynotes.data.local
 
 import androidx.room.TypeConverter
 import com.example.teddynotes.model.Mood

@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
@@ -24,9 +25,12 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -35,10 +39,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.teddynotes.R
 import com.example.teddynotes.model.Message
 import com.example.teddynotes.model.MessageType
+import com.example.teddynotes.repository.ChatRepository
 import com.example.teddynotes.ui.common.TeddyTopBar
 import com.example.teddynotes.ui.theme.BackgroundGreen
 import com.example.teddynotes.ui.theme.BearDeep
@@ -46,15 +52,31 @@ import com.example.teddynotes.ui.theme.BearPrimary
 import com.example.teddynotes.ui.theme.Nunito
 import com.example.teddynotes.ui.theme.PrimaryTextBrown
 import com.example.teddynotes.ui.theme.SoftWhite
+import com.example.teddynotes.viewmodel.ChatViewModel
+import com.example.teddynotes.viewmodel.ChatViewModelFactory
+import com.example.teddynotes.viewmodel.NoteViewModel
+import kotlinx.coroutines.launch
 
 @Composable
-fun ChatBotScreen(navController: NavController) {
-    val messages = listOf(
-        Message("Hey! How are you feeling today?", MessageType.TEDDY),
-        Message("I'm okay I guess", MessageType.USER),
-        Message("Tell me more, I'm here for you 🐻", MessageType.TEDDY)
-    )
+fun ChatBotScreen(navController: NavController, noteViewModel: NoteViewModel) {
+
+    val repository = remember { ChatRepository() }
+    val viewModel: ChatViewModel = viewModel(factory = ChatViewModelFactory(repository))
+    val messages by viewModel.messages.collectAsState()
+    val isLoading by viewModel.isLoading.collectAsState()
+    val notes by noteViewModel.allNotes.collectAsState()
     var input by remember { mutableStateOf("") }
+
+    val listState = rememberLazyListState()
+
+    LaunchedEffect(
+        messages.size
+    ) {
+        if(messages.isNotEmpty()){
+            listState.animateScrollToItem(messages.size-1)
+        }
+    }
+
     Scaffold(containerColor = BackgroundGreen) { innerPadding ->
         Column(
             modifier = Modifier
@@ -63,6 +85,7 @@ fun ChatBotScreen(navController: NavController) {
         ) {
             TeddyTopBar(onBack = { navController.popBackStack() })
             LazyColumn(
+                state = listState,
                 modifier = Modifier
                     .weight(1f)
                     .padding(horizontal = 16.dp),
@@ -70,6 +93,11 @@ fun ChatBotScreen(navController: NavController) {
             ) {
                 items(messages) { message ->
                     ChatBubble(message = message)
+                }
+                if(isLoading){
+                    item{
+                        ChatBubble(message = Message("...", MessageType.TEDDY))
+                    }
                 }
             }
 
@@ -102,7 +130,12 @@ fun ChatBotScreen(navController: NavController) {
                     }
                 )
 
-                IconButton(onClick = { }) {
+                IconButton(onClick = {
+                    if(input.isNotBlank() && !isLoading){
+                        viewModel.sendMessage(input.trim(),notes)
+                        input=""
+                    }
+                }) {
                     Icon(
                         Icons.Default.Send,
                         contentDescription = "Send", tint = BearPrimary
@@ -128,8 +161,7 @@ fun ChatBubble(message: Message) {
                     .size(42.dp)
                     .clip(CircleShape)
                     .background(SoftWhite.copy(alpha = 0.65f))
-                    .padding(6.dp)
-                ,
+                    .padding(6.dp),
                 contentAlignment = Alignment.Center
             ) {
                 Image(

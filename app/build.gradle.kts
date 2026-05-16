@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     kotlin("plugin.serialization")
     id("com.google.devtools.ksp")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -81,5 +82,12 @@ dependencies {
     implementation("com.squareup.retrofit2:retrofit:2.11.0")
     // Retrofit GSON converter (to handle JSON serialization/deserialization)
     implementation("com.squareup.retrofit2:converter-gson:2.11.0")
+
+    //firebase
+    implementation(platform("com.google.firebase:firebase-bom:34.13.0"))
+    implementation("com.google.firebase:firebase-ai")
+
+    //datastore
+    implementation("androidx.datastore:datastore-preferences:1.2.1")
 
 }

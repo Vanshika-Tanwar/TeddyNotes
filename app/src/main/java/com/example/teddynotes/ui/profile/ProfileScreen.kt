@@ -22,6 +22,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -40,10 +41,24 @@ import com.example.teddynotes.ui.theme.Nunito
 import com.example.teddynotes.ui.theme.PrimaryTextBrown
 import com.example.teddynotes.ui.theme.SoftWhite
 import com.example.teddynotes.viewmodel.NoteViewModel
+import com.example.teddynotes.viewmodel.UserViewModel
 
 @Composable
-fun ProfileScreen(navController: NavController, noteViewModel: NoteViewModel) {
+fun ProfileScreen(navController: NavController, noteViewModel: NoteViewModel, userViewModel: UserViewModel) {
 
+    val username by userViewModel.username.collectAsState()
+    val dob by userViewModel.dob.collectAsState()
+    val email by userViewModel.email.collectAsState()
+    val gender by userViewModel.gender.collectAsState()
+    val age = remember(dob) {
+        if (dob.isNotEmpty()) {
+            try {
+                val birthDate = java.time.LocalDate.parse(dob,
+                    java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy"))
+                java.time.Period.between(birthDate, java.time.LocalDate.now()).years.toString()
+            } catch (e: Exception) { "" }
+        } else ""
+    }
     val notes by noteViewModel.allNotes.collectAsState()
 
     Scaffold(containerColor = BackgroundGreen) { innerPadding ->
@@ -92,10 +107,12 @@ fun ProfileScreen(navController: NavController, noteViewModel: NoteViewModel) {
                         }
 
                     }
-                    InfoCard("Name: Vanshika")
-                    InfoCard("Email: xyz@gmail.com")
-                    InfoCard("Age: 21")
-                    InfoCard("Total Active Days: ${notes.size} days")
+                    InfoCard("Name: $username")
+                    InfoCard("Age: $age")
+                    InfoCard("Email: $email")
+                    InfoCard("Gender: $gender")
+
+                    InfoCard("Total Notes: ${notes.size} notes")
                     InfoCard("Mood This Week: 😊 Happy")
 
                     InfoCard("View all notes", onClick = {

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "821462801927",
+    "project_id": "teddynotes-fec22",
+    "storage_bucket": "teddynotes-fec22.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:821462801927:android:8f178075810b2405b394a2",
+        "android_client_info": {
+          "package_name": "com.example.teddynotes"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAbTmAUYw1dyrGfiEd1OLHlLBCTTWZxP-A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

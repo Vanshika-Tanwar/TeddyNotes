@@ -3,6 +3,7 @@ package com.example.teddynotes.navigation
 import android.app.Application
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -19,6 +20,7 @@ import com.example.teddynotes.viewmodel.HomeViewModel
 import com.example.teddynotes.viewmodel.HomeViewModelFactory
 import com.example.teddynotes.viewmodel.NoteViewModel
 import com.example.teddynotes.viewmodel.NoteViewModelFactory
+import com.example.teddynotes.viewmodel.UserViewModel
 
 @Composable
 fun NavGraph(){
@@ -29,6 +31,8 @@ fun NavGraph(){
     )
 
     val homeViewModel: HomeViewModel = viewModel(factory = HomeViewModelFactory(QuoteRepository()))
+
+    val userViewModel : UserViewModel = viewModel(factory = ViewModelProvider.AndroidViewModelFactory(LocalContext.current.applicationContext as Application))
     NavHost(
         navController = navController,
         startDestination = NavRoutes.SplashScreen
@@ -38,7 +42,7 @@ fun NavGraph(){
         }
 
         composable<NavRoutes.HomeScreen>{
-            HomeScreen(navController, noteViewModel, homeViewModel)
+            HomeScreen(navController, noteViewModel, homeViewModel,userViewModel)
         }
 
         composable<NavRoutes.NoteScreen>{ backStackEntry ->
@@ -55,7 +59,7 @@ fun NavGraph(){
         }
 
         composable<NavRoutes.ProfileScreen>{
-            ProfileScreen(navController, noteViewModel)
+            ProfileScreen(navController, noteViewModel,userViewModel)
         }
 
 

@@ -25,6 +25,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -45,19 +46,32 @@ import com.example.teddynotes.ui.theme.PrimaryTextBrown
 import com.example.teddynotes.ui.theme.SoftWhite
 import com.example.teddynotes.viewmodel.HomeViewModel
 import com.example.teddynotes.viewmodel.NoteViewModel
+import com.example.teddynotes.viewmodel.UserViewModel
 import kotlinx.coroutines.launch
 
 @Composable
 fun HomeScreen(
     navController: NavController,
     noteViewModel: NoteViewModel,
-    homeViewModel: HomeViewModel
+    homeViewModel: HomeViewModel,
+    userViewModel: UserViewModel
 ) {
+
+    val isOnboarded by userViewModel.isOnboarded.collectAsState()
+
+    if(!isOnboarded){
+        OnboardingDialog(
+            onComplete = {username,dob,email,gender ->
+                userViewModel.saveUser(username,dob,email,gender)
+            }
+        )
+    }
+    val username by userViewModel.username.collectAsState()
+
     val coroutineScope = rememberCoroutineScope()
     var quote = homeViewModel.quote.collectAsState()
-    val user = "Vanshika"
     val morningGreetings = listOf(
-        "Good morning, ${user} ☀️",
+        "Good morning, ${username} ☀️",
         "A fresh day to breathe and grow 🌿",
         "Hope today feels gentle for you 🤎"
     )
@@ -69,9 +83,9 @@ fun HomeScreen(
     )
 
     val eveningGreetings = listOf(
-        "Welcome back, ${user} 🌙",
+        "Welcome back, ${username} 🌙",
         "Time to unwind a little 🤎",
-        "Another page for today 📖"
+        "Another note for today 📖"
     )
 
     val hour = java.time.LocalTime.now().hour

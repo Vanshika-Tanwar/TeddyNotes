@@ -14,9 +14,4 @@ object RetrofitClient {
         buildRetrofit("https://zenquotes.io/api/")
             .create(QuoteAPI::class.java)
     }
-
-    val chatApi: ChatBotAPI by lazy {
-        buildRetrofit("https://generativelanguage.googleapis.com/")
-            .create(ChatBotAPI::class.java)
-    }
 }
