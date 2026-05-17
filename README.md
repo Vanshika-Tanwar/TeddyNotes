@@ -84,13 +84,17 @@ com.example.teddynotes/
 
 ## Screenshots
 
-| Home | Notes | Teddy Chat |
+| Home | Note List | Teddy Chat |
 |---|---|---|
-| ![home](screenshots/home.png) | ![notes](screenshots/notes.png) | ![chat](screenshots/chat.png) |
+| ![home](screenshots/home.png) | ![noteslist](screenshots/notes_list.png) | ![chat](screenshots/teddy_chat.png) |
 
-| Add Note | Profile | Note List |
+| Mood Picker | Profile | Onboarding |
 |---|---|---|
-| ![addnote](screenshots/addnote.png) | ![profile](screenshots/profile.png) | ![notelist](screenshots/notelist.png) |
+| ![moodpicker](screenshots/moodpicker.png) | ![profile](screenshots/profile.png) | ![onboarding](screenshots/onboarding.png) |
+
+| Edit Profile | Splash | |
+|---|---|---|
+| ![editprofile](screenshots/edit_profile.png) | ![splash](screenshots/splash.png) | |
 
 ---
 
@@ -104,7 +108,7 @@ This app uses Firebase AI — you'll need your own Firebase project to run it.
 4. Enable Gemini Developer API in Firebase console → AI Logic
 5. Build and run
 
-Or download the latest APK to try it directly.
+Or download the latest APK from [RELEASE](https://github.com/Vanshika-Tanwar/TeddyNotes/releases/tag/v1.0.0) to try it directly.
 
 ---
 
