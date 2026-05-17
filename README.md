@@ -86,15 +86,15 @@ com.example.teddynotes/
 
 | Splash | Onboarding | Home |
 |---|---|---|
-| ![splash](screenshots/splash.png) | ![onboarding](screenshots/onboarding.png) | ![home](screenshots/home.png) |
+| <img src="screenshots/splash.png" width="250"/> | <img src="screenshots/onboarding.png" width="250"/> | <img src="screenshots/home.png" width="250"/> |
 
 | Mood Picker | Add Note | Note List |
 |---|---|---|
-| ![moodpicker](screenshots/moodpicker.png) | ![addnote](screenshots/add_note.png) | ![noteslist](screenshots/notes_list.png) |
+| <img src="screenshots/moodpicker.png" width="250"/> | <img src="screenshots/add_note.png" width="250"/> | <img src="screenshots/notes_list.png" width="250"/> |
 
 | Profile | Edit Profile | Teddy Chat |
 |---|---|---|
-| ![profile](screenshots/profile.png) | ![editprofile](screenshots/edit_profile.png) | ![chat](screenshots/teddy_chat.png) |
+| <img src="screenshots/profile.png" width="250"/> | <img src="screenshots/edit_profile.png" width="250"/> | <img src="screenshots/teddy_chat.png" width="250"/> |
 
 ---
 
