@@ -51,7 +51,7 @@ fun NavGraph(){
         }
 
         composable<NavRoutes.ChatBotScreen>{
-            ChatBotScreen(navController, noteViewModel)
+            ChatBotScreen(navController, noteViewModel,userViewModel)
         }
 
         composable<NavRoutes.NotesListScreen>{

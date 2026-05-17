@@ -10,7 +10,7 @@ import kotlinx.coroutines.launch
 class HomeViewModel(repository: QuoteRepository) : ViewModel() {
     private val repo = QuoteRepository()
 
-    private val _quote = MutableStateFlow("Loading a thought for you<3")
+    private val _quote = MutableStateFlow("Loading a thought for you...<3")
 
     val quote: StateFlow<String> = _quote
 

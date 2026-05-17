@@ -16,9 +16,13 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -49,6 +53,10 @@ fun TeddyTopBar(onBack: () -> Unit, showSearch: Boolean = false, onSearch: () ->
             )
         }
         if (showSearch && isSearchActive) {
+            val focusRequester = remember { FocusRequester() }
+            LaunchedEffect(isSearchActive) {
+                if (isSearchActive) focusRequester.requestFocus()
+            }
             BasicTextField(
                 value = searchQuery,
                 onValueChange = onSearchQueryChange,
@@ -57,7 +65,7 @@ fun TeddyTopBar(onBack: () -> Unit, showSearch: Boolean = false, onSearch: () ->
                     fontSize = 16.sp,
                     color = PrimaryTextBrown
                 ),
-                modifier = Modifier.weight(1f),
+                modifier = Modifier.weight(1f).focusRequester(focusRequester),
                 decorationBox = { innerTextField ->
                     Box(
                         modifier = Modifier

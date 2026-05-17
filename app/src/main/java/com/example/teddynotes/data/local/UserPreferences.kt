@@ -17,6 +17,8 @@ class UserPreferences(private val context: Context) {
         val DOB = stringPreferencesKey("dob")
         val EMAIL = stringPreferencesKey("email")
         val GENDER = stringPreferencesKey("gender")
+
+        val DP_URI = stringPreferencesKey("dp_uri")
         val IS_ONBOARDED = booleanPreferencesKey("is_onboarded")
 
     }
@@ -26,6 +28,8 @@ class UserPreferences(private val context: Context) {
     val dob: Flow<String> = context.dataStore.data.map { it[DOB] ?: "" }
     val email: Flow<String> = context.dataStore.data.map { it[EMAIL] ?: "" }
     val gender: Flow<String> = context.dataStore.data.map { it[GENDER] ?: "" }
+
+    val dpUri: Flow<String> = context.dataStore.data.map { it[DP_URI] ?: "" }
     val isOnboarded : Flow<Boolean> = context.dataStore.data
         .map { it[IS_ONBOARDED] ?: false }
 
@@ -38,5 +42,18 @@ class UserPreferences(private val context: Context) {
             prefs[GENDER] = gender
             prefs[IS_ONBOARDED] = true
         }
+    }
+    suspend fun updateUser(username: String, dob: String, email: String, gender: String, dpUri: String) {
+        context.dataStore.edit { prefs ->
+            prefs[USERNAME] = username
+            prefs[DOB] = dob
+            prefs[EMAIL] = email
+            prefs[GENDER] = gender
+            prefs[DP_URI] = dpUri
+        }
+    }
+
+    suspend fun clearUser() {
+        context.dataStore.edit { it.clear() }
     }
 }

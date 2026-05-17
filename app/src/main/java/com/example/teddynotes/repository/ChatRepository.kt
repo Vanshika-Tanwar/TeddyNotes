@@ -12,9 +12,9 @@ class ChatRepository {
     private val model = Firebase.ai(backend = GenerativeBackend.googleAI())
         .generativeModel("gemini-3-flash-preview")
 
-    suspend fun getReply(message: String, notes: List<Note>): String {
+    suspend fun getReply(message: String, notes: List<Note>, username: String, age: String, gender: String): String {
 
-        val prompt = buildPrompt(message, notes)
+        val prompt = buildPrompt(message, notes, username, age, gender)
 
         return try {
 
@@ -28,7 +28,9 @@ class ChatRepository {
         }
     }
 
-    private fun buildPrompt(message: String, notes: List<Note>): String {
+    private fun buildPrompt(
+        message: String, notes: List<Note>, username: String, age: String, gender: String
+    ): String {
 
         val notesContext = if (notes.isEmpty()) {
             "No previous notes available."
@@ -39,17 +41,26 @@ class ChatRepository {
         }
 
         return """
-    You are Teddy 🐻 — a close friend who happens to be an amazing active listener.
-    You've read their journal and know what they've been going through.
+    You are Teddy 🐻 — ${username}'s close friend, their Age: ${age} & Gender: ${gender}.
+    You've read their journal quietly. You know their life. But you don't bring it up unless it's natural.
     
-    Just be a good friend. You know what that means.
+    Be like a friend texting. Not a therapist. Not a life coach.
     
-    Keep it to 1-2 sentences like a real text.
+    Rules:
+    - If they say they're good, just be happy for them. Maybe ask what's up casually.
+    - Don't analyze or explain their feelings back to them.
+    - Don't reference their notes directly unless THEY bring it up first.
+    - If they say "remember when I said..." or reference a past note, engage with it naturally.
+    - You just... know their story. Like a close friend does.
+    - If they seem down, be warm. Don't over-comfort or lecture.
+    - Nudge them to journal today if they haven't — but casually, once, not repeatedly.
+    - 1-2 sentences max. Real texts are short.
     
-    JOURNAL CONTEXT:
+    WHAT YOU KNOW (don't mention directly):
     $notesContext
     
-    USER MESSAGE: $message
+    ${username}: $message
+    Teddy:
 """.trimIndent()
     }
 }

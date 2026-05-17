@@ -84,7 +84,7 @@ fun OnboardingDialog(onComplete: (String, String, String, String) -> Unit) {
                 if (showDatePicker) {
                     val datePickerState = rememberDatePickerState(
                         initialSelectedDateMillis = java.time.LocalDate.of(2000, 1, 1)
-                            .atStartOfDay(java.time.ZoneId.systemDefault()).toInstant()
+                            .atStartOfDay(java.time.ZoneId.of("UTC")).toInstant()
                             .toEpochMilli()
                     )
                     DatePickerDialog(
@@ -124,46 +124,7 @@ fun OnboardingDialog(onComplete: (String, String, String, String) -> Unit) {
                 }
 
                 OnboardingField("Email", email) { email = it }
-
-                val genderOptions = listOf("Male", "Female", "Non-binary", "Prefer not to say")
-                var genderExpanded by remember { mutableStateOf(false) }
-                Box {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clip(RoundedCornerShape(12.dp))
-                            .background(NoteBeige)
-                            .clickable { genderExpanded = true }
-                            .padding(horizontal = 16.dp, vertical = 12.dp)) {
-                        Text(
-                            text = gender.ifEmpty { "Gender" },
-                            fontFamily = Nunito,
-                            fontSize = 15.sp,
-                            color = if (gender.isEmpty()) PrimaryTextBrown.copy(alpha = 0.4f) else PrimaryTextBrown
-                        )
-                    }
-                    DropdownMenu(
-                        expanded = genderExpanded,
-                        onDismissRequest = { genderExpanded = false },
-                        modifier = Modifier
-                            .background(NoteBeige.copy(alpha = 0.5f))
-                            .clip(RoundedCornerShape(12.dp))
-                    ) {
-                        genderOptions.forEach { option ->
-                            DropdownMenuItem(
-                                text = {
-                                Text(
-                                    option, fontFamily = Nunito, color = PrimaryTextBrown
-                                )
-                            }, onClick = {
-                                gender = option
-                                genderExpanded = false
-                            }, modifier = Modifier.background(NoteBeige)
-                            )
-                        }
-                    }
-                }
-
+                GenderDropdown(gender = gender, onGenderSelected = { gender = it })
                 val allFilled =
                     username.isNotBlank() && dob.length == 10 && email.isNotBlank() && gender.isNotBlank()
                 Button(
@@ -208,4 +169,44 @@ fun OnboardingField(label: String, value: String, onValueChange: (String) -> Uni
 
         }, modifier = Modifier.fillMaxWidth()
     )
+}
+
+@Composable
+fun GenderDropdown(gender: String, onGenderSelected: (String) -> Unit) {
+    val genderOptions = listOf("Male", "Female", "Non-binary", "Prefer not to say")
+    var expanded by remember { mutableStateOf(false) }
+
+    Box {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(12.dp))
+                .background(NoteBeige)
+                .clickable { expanded = true }
+                .padding(horizontal = 16.dp, vertical = 12.dp)
+        ) {
+            Text(
+                text = gender.ifEmpty { "Gender" },
+                fontFamily = Nunito,
+                fontSize = 15.sp,
+                color = if (gender.isEmpty()) PrimaryTextBrown.copy(alpha = 0.4f) else PrimaryTextBrown
+            )
+        }
+        DropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false },
+            modifier = Modifier.background(NoteBeige)
+        ) {
+            genderOptions.forEach { option ->
+                DropdownMenuItem(
+                    text = { Text(option, fontFamily = Nunito, color = PrimaryTextBrown) },
+                    onClick = {
+                        onGenderSelected(option)
+                        expanded = false
+                    },
+                    modifier = Modifier.background(NoteBeige)
+                )
+            }
+        }
+    }
 }

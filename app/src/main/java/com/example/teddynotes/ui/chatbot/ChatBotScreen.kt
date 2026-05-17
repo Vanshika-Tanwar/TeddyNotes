@@ -1,5 +1,10 @@
 package com.example.teddynotes.ui.chatbot
 
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -55,11 +60,23 @@ import com.example.teddynotes.ui.theme.SoftWhite
 import com.example.teddynotes.viewmodel.ChatViewModel
 import com.example.teddynotes.viewmodel.ChatViewModelFactory
 import com.example.teddynotes.viewmodel.NoteViewModel
+import com.example.teddynotes.viewmodel.UserViewModel
 import kotlinx.coroutines.launch
 
 @Composable
-fun ChatBotScreen(navController: NavController, noteViewModel: NoteViewModel) {
-
+fun ChatBotScreen(navController: NavController, noteViewModel: NoteViewModel, userViewModel: UserViewModel) {
+    val username by userViewModel.username.collectAsState()
+    val dob by userViewModel.dob.collectAsState()
+    val gender by userViewModel.gender.collectAsState()
+    val age = remember(dob) {
+        if (dob.isNotEmpty()) {
+            try {
+                val birthDate = java.time.LocalDate.parse(dob,
+                    java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy"))
+                java.time.Period.between(birthDate, java.time.LocalDate.now()).years.toString()
+            } catch (e: Exception) { "" }
+        } else ""
+    }
     val repository = remember { ChatRepository() }
     val viewModel: ChatViewModel = viewModel(factory = ChatViewModelFactory(repository))
     val messages by viewModel.messages.collectAsState()
@@ -132,7 +149,7 @@ fun ChatBotScreen(navController: NavController, noteViewModel: NoteViewModel) {
 
                 IconButton(onClick = {
                     if(input.isNotBlank() && !isLoading){
-                        viewModel.sendMessage(input.trim(),notes)
+                        viewModel.sendMessage(input.trim(),notes,username,age,gender)
                         input=""
                     }
                 }) {

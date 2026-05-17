@@ -36,6 +36,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import coil3.compose.AsyncImage
 import com.example.teddynotes.R
 import com.example.teddynotes.navigation.NavRoutes
 import com.example.teddynotes.ui.theme.BackgroundGreen
@@ -58,8 +59,8 @@ fun HomeScreen(
 ) {
 
     val isOnboarded by userViewModel.isOnboarded.collectAsState()
-
-    if(!isOnboarded){
+    val isLoading by userViewModel.isLoading.collectAsState()
+    if(!isLoading && !isOnboarded){
         OnboardingDialog(
             onComplete = {username,dob,email,gender ->
                 userViewModel.saveUser(username,dob,email,gender)
@@ -67,6 +68,7 @@ fun HomeScreen(
         )
     }
     val username by userViewModel.username.collectAsState()
+    val dpUri by userViewModel.dpUri.collectAsState()
 
     val coroutineScope = rememberCoroutineScope()
     var quote = homeViewModel.quote.collectAsState()
@@ -114,16 +116,21 @@ fun HomeScreen(
                 horizontalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterHorizontally)
             ) {
                 HomeCard(onClick = { navController.navigate(NavRoutes.ProfileScreen) }) {
-                    Image(
-                        painter = painterResource(R.drawable.user_dp),
-                        contentDescription = "user dp",
-                        contentScale = ContentScale.Crop,
-                        modifier = Modifier
-                            .clip(CircleShape)
-                            .fillMaxSize()
-
-                    )
-
+                    if (dpUri.isNotEmpty()) {
+                        AsyncImage(
+                            model = dpUri,
+                            contentDescription = "user dp",
+                            modifier = Modifier.fillMaxSize().clip(CircleShape),
+                            contentScale = ContentScale.Crop
+                        )
+                    } else {
+                        Image(
+                            painter = painterResource(R.drawable.user_dp),
+                            contentDescription = "user dp",
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier.clip(CircleShape).fillMaxSize()
+                        )
+                    }
                 }
                 HomeCard(onClick = { navController.navigate((NavRoutes.NotesListScreen)) }) {
                     Icon(

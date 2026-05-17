@@ -14,10 +14,19 @@ import kotlinx.coroutines.launch
 class ChatViewModel(
     private val repository: ChatRepository
 ) : ViewModel()  {
+
+    private val greetings = listOf(
+        "Hey! I'm Teddy 🐻 How are you feeling today?",
+        "Hi there! 🐻 What's on your mind?",
+        "Hey you! 🐻 How's your heart doing today?",
+        "Hello! 🐻 What's on your mind?",
+        "Welcome back! 🐻 How are you holding up?",
+        "Glad to see you! How are things going?"
+    )
     private val _messages = MutableStateFlow<List<Message>>(
         listOf(
             Message(
-                "Hey! I'm Teddy 🐻 How are you feeling today?",
+                greetings.random(),
                 MessageType.TEDDY
             )
         )
@@ -28,14 +37,13 @@ class ChatViewModel(
     private val _isLoading = MutableStateFlow(false)
     val isLoading = _isLoading.asStateFlow()
 
-    fun sendMessage(text: String, notes: List<Note>) {
-        Log.d("TEST_FLOW", "sendMessage: $text")
+    fun sendMessage(text: String, notes: List<Note>, username: String, age: String, gender: String) {
         _messages.value = _messages.value + Message(text, MessageType.USER)
         _isLoading.value = true
 
         viewModelScope.launch {
             try {
-                val response = repository.getReply(text,notes)
+                val response = repository.getReply(text, notes, username, age, gender)
                 _messages.value = _messages.value + Message(response, MessageType.TEDDY)
             } catch (e: Exception){
                 _messages.value = _messages.value + Message(

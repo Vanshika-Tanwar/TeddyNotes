@@ -25,5 +25,10 @@ interface NoteDao {
     @Query("SELECT * FROM notes WHERE date = :date")
     suspend fun getNoteById(date:String) : Note?
 
+    @Query("SELECT * FROM notes WHERE date >= :sevenDaysAgo")
+    suspend fun getNotesFromLastWeek(sevenDaysAgo: String) : List<Note>
+
+    @Query("DELETE FROM notes")
+    suspend fun deleteAllNotes()
 
 }
