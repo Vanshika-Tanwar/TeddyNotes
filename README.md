@@ -84,13 +84,17 @@ com.example.teddynotes/
 
 ## Screenshots
 
-| Home | Notes | Teddy Chat |
+| Home | Note List | Teddy Chat |
 |---|---|---|
-| ![home](screenshots/home.png) | ![notes](screenshots/notes.png) | ![chat](screenshots/chat.png) |
+| ![home](screenshots/home.png) | ![noteslist](screenshots/notes_list.png) | ![chat](screenshots/teddy_chat.png) |
 
-| Add Note | Profile | Note List |
+| Mood Picker | Profile | Onboarding |
 |---|---|---|
-| ![addnote](screenshots/addnote.png) | ![profile](screenshots/profile.png) | ![notelist](screenshots/notelist.png) |
+| ![moodpicker](screenshots/moodpicker.png) | ![profile](screenshots/profile.png) | ![onboarding](screenshots/onboarding.png) |
+
+| Edit Profile | Splash | |
+|---|---|---|
+| ![editprofile](screenshots/edit_profile.png) | ![splash](screenshots/splash.png) | |
 
 ---
 
