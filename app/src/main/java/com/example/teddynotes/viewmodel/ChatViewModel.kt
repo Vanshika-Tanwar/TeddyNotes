@@ -11,10 +11,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class ChatViewModel(
-    private val repository: ChatRepository
-) : ViewModel()  {
-
+class ChatViewModel : ViewModel()  {
+    private val repository = ChatRepository()
     private val greetings = listOf(
         "Hey! I'm Teddy 🐻 How are you feeling today?",
         "Hi there! 🐻 What's on your mind?",

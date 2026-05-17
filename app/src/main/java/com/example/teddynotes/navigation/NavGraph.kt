@@ -17,7 +17,6 @@ import com.example.teddynotes.ui.home.HomeScreen
 import com.example.teddynotes.ui.notes.NoteScreen
 import com.example.teddynotes.ui.splash.SplashScreen
 import com.example.teddynotes.viewmodel.HomeViewModel
-import com.example.teddynotes.viewmodel.HomeViewModelFactory
 import com.example.teddynotes.viewmodel.NoteViewModel
 import com.example.teddynotes.viewmodel.NoteViewModelFactory
 import com.example.teddynotes.viewmodel.UserViewModel
@@ -30,7 +29,7 @@ fun NavGraph(){
         factory = NoteViewModelFactory(context.applicationContext as Application)
     )
 
-    val homeViewModel: HomeViewModel = viewModel(factory = HomeViewModelFactory(QuoteRepository()))
+    val homeViewModel: HomeViewModel = viewModel()
 
     val userViewModel : UserViewModel = viewModel(factory = ViewModelProvider.AndroidViewModelFactory(LocalContext.current.applicationContext as Application))
     NavHost(

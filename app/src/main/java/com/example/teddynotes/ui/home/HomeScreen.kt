@@ -69,7 +69,6 @@ fun HomeScreen(
     }
     val username by userViewModel.username.collectAsState()
     val dpUri by userViewModel.dpUri.collectAsState()
-
     val coroutineScope = rememberCoroutineScope()
     var quote = homeViewModel.quote.collectAsState()
     val morningGreetings = listOf(
@@ -101,7 +100,6 @@ fun HomeScreen(
     }
 
     Scaffold(containerColor = BackgroundGreen) { innerPadding ->
-
         Column(
             modifier = Modifier
                 .padding(innerPadding)

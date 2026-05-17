@@ -58,7 +58,6 @@ import com.example.teddynotes.ui.theme.Nunito
 import com.example.teddynotes.ui.theme.PrimaryTextBrown
 import com.example.teddynotes.ui.theme.SoftWhite
 import com.example.teddynotes.viewmodel.ChatViewModel
-import com.example.teddynotes.viewmodel.ChatViewModelFactory
 import com.example.teddynotes.viewmodel.NoteViewModel
 import com.example.teddynotes.viewmodel.UserViewModel
 import kotlinx.coroutines.launch
@@ -77,8 +76,7 @@ fun ChatBotScreen(navController: NavController, noteViewModel: NoteViewModel, us
             } catch (e: Exception) { "" }
         } else ""
     }
-    val repository = remember { ChatRepository() }
-    val viewModel: ChatViewModel = viewModel(factory = ChatViewModelFactory(repository))
+    val viewModel: ChatViewModel = viewModel()
     val messages by viewModel.messages.collectAsState()
     val isLoading by viewModel.isLoading.collectAsState()
     val notes by noteViewModel.allNotes.collectAsState()
