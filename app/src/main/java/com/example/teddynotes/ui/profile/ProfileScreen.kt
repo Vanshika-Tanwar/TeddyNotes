@@ -39,6 +39,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -66,7 +67,7 @@ import com.example.teddynotes.viewmodel.UserViewModel
 fun ProfileScreen(
     navController: NavController, noteViewModel: NoteViewModel, userViewModel: UserViewModel
 ) {
-
+    val context = LocalContext.current
     val username by userViewModel.username.collectAsState()
     val dob by userViewModel.dob.collectAsState()
     val email by userViewModel.email.collectAsState()
@@ -99,13 +100,15 @@ fun ProfileScreen(
         contract = ActivityResultContracts.GetContent()
     ) { uri ->
         uri?.let {
-            userViewModel.updateUser(
-                editName,
-                editDob,
-                editEmail,
-                editGender,
-                it.toString()
-            )
+            val inputStream = context.contentResolver.openInputStream(it)
+            val file = java.io.File(context.filesDir, "user_dp.jpg")
+            inputStream?.use { input ->
+                file.outputStream().use { output ->
+                    input.copyTo(output)
+                }
+            }
+            val internalUri = file.absolutePath
+            userViewModel.updateUser(editName, editDob, editEmail, editGender, internalUri)
         }
     }
     var showDatePicker by remember { mutableStateOf(false) }
@@ -171,11 +174,9 @@ fun ProfileScreen(
                     Box(contentAlignment = Alignment.BottomEnd, modifier = Modifier.padding(8.dp)) {
                         if (dpUri.isNotEmpty()) {
                             AsyncImage(
-                                model = dpUri,
+                                model = java.io.File(dpUri),
                                 contentDescription = "DP",
-                                modifier = Modifier
-                                    .size(120.dp)
-                                    .clip(CircleShape),
+                                modifier = Modifier.size(120.dp).clip(CircleShape),
                                 contentScale = ContentScale.Crop
                             )
                         } else {

@@ -12,14 +12,20 @@ class ChatRepository {
     private val model = Firebase.ai(backend = GenerativeBackend.googleAI())
         .generativeModel("gemini-3-flash-preview")
 
+    private var chat = model.startChat()
+
     suspend fun getReply(message: String, notes: List<Note>, username: String, age: String, gender: String): String {
 
         val prompt = buildPrompt(message, notes, username, age, gender)
 
         return try {
+            val prompt = if (chat.history.isEmpty()) {
+                buildPrompt(message, notes, username, age, gender)
+            } else {
+                message
+            }
 
-            val response = model.generateContent(
-                content { text(prompt) })
+            val response = chat.sendMessage(prompt)
             response.text ?: "Teddy is thinking 🐻"
 
         } catch (e: Exception) {

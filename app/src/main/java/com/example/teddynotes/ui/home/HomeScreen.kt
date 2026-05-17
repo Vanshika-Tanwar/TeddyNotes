@@ -60,10 +60,10 @@ fun HomeScreen(
 
     val isOnboarded by userViewModel.isOnboarded.collectAsState()
     val isLoading by userViewModel.isLoading.collectAsState()
-    if(!isLoading && !isOnboarded){
+    if (!isLoading && !isOnboarded) {
         OnboardingDialog(
-            onComplete = {username,dob,email,gender ->
-                userViewModel.saveUser(username,dob,email,gender)
+            onComplete = { username, dob, email, gender ->
+                userViewModel.saveUser(username, dob, email, gender)
             }
         )
     }
@@ -84,18 +84,21 @@ fun HomeScreen(
     )
 
     val eveningGreetings = listOf(
-        "Welcome back, ${username} 🌙",
+        "Welcome back ${username} 🌙",
         "Time to unwind a little 🤎",
         "Another note for today 📖"
     )
 
     val hour = java.time.LocalTime.now().hour
 
-    val greeting = remember {
-        when (hour) {
-            in 5..11 -> morningGreetings.random()
-            in 12..16 -> afternoonGreetings.random()
-            else -> eveningGreetings.random()
+    val greeting = remember(username) {
+        if (username.isEmpty()) ""
+        else {
+            when (hour) {
+                in 5..11 -> morningGreetings.random()
+                in 12..16 -> afternoonGreetings.random()
+                else -> eveningGreetings.random()
+            }
         }
     }
 
@@ -116,9 +119,11 @@ fun HomeScreen(
                 HomeCard(onClick = { navController.navigate(NavRoutes.ProfileScreen) }) {
                     if (dpUri.isNotEmpty()) {
                         AsyncImage(
-                            model = dpUri,
-                            contentDescription = "user dp",
-                            modifier = Modifier.fillMaxSize().clip(CircleShape),
+                            model = java.io.File(dpUri),
+                            contentDescription = "DP",
+                            modifier = Modifier
+                                .size(120.dp)
+                                .clip(CircleShape),
                             contentScale = ContentScale.Crop
                         )
                     } else {
@@ -126,7 +131,9 @@ fun HomeScreen(
                             painter = painterResource(R.drawable.user_dp),
                             contentDescription = "user dp",
                             contentScale = ContentScale.Crop,
-                            modifier = Modifier.clip(CircleShape).fillMaxSize()
+                            modifier = Modifier
+                                .clip(CircleShape)
+                                .fillMaxSize()
                         )
                     }
                 }
