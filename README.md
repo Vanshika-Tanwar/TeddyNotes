@@ -88,13 +88,13 @@ com.example.teddynotes/
 |---|---|---|
 | ![splash](screenshots/splash.png) | ![onboarding](screenshots/onboarding.png) | ![home](screenshots/home.png) |
 
-| Mood Picker | Note List | Profile |
+| Mood Picker | Add Note | Note List |
 |---|---|---|
-| ![moodpicker](screenshots/moodpicker.png) | ![noteslist](screenshots/notes_list.png) | ![profile](screenshots/profile.png) |
+| ![moodpicker](screenshots/moodpicker.png) | ![addnote](screenshots/add_note.png) | ![noteslist](screenshots/notes_list.png) |
 
-| Edit Profile | Teddy Chat | |
+| Profile | Edit Profile | Teddy Chat |
 |---|---|---|
-| ![editprofile](screenshots/edit_profile.png) | ![chat](screenshots/teddy_chat.png) | |
+| ![profile](screenshots/profile.png) | ![editprofile](screenshots/edit_profile.png) | ![chat](screenshots/teddy_chat.png) |
 
 ---
 
