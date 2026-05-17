@@ -104,7 +104,7 @@ This app uses Firebase AI — you'll need your own Firebase project to run it.
 4. Enable Gemini Developer API in Firebase console → AI Logic
 5. Build and run
 
-Or download the latest APK to try it directly.
+Or download the latest APK from [RELEASE](https://github.com/Vanshika-Tanwar/TeddyNotes/releases/tag/v1.0.0) to try it directly.
 
 ---
 
