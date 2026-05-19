@@ -18,8 +18,8 @@ android {
         applicationId = "com.example.teddynotes"
         minSdk = 26
         targetSdk = 36
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 2
+        versionName = "1.1x"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -86,6 +86,7 @@ dependencies {
     //firebase
     implementation(platform("com.google.firebase:firebase-bom:34.13.0"))
     implementation("com.google.firebase:firebase-ai")
+    implementation("com.google.firebase:firebase-analytics")
 
     //datastore
     implementation("androidx.datastore:datastore-preferences:1.2.1")

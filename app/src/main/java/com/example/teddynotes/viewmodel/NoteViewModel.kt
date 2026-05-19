@@ -7,12 +7,13 @@ import com.example.teddynotes.data.local.TeddyDatabase
 import com.example.teddynotes.model.Mood
 import com.example.teddynotes.model.Note
 import com.example.teddynotes.repository.NoteRepository
+import com.google.firebase.analytics.FirebaseAnalytics
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
-class NoteViewModel(application: Application) : AndroidViewModel(application) {
+class NoteViewModel(application: Application, private val analytics: FirebaseAnalytics) : AndroidViewModel(application) {
     private val dao = TeddyDatabase.getDatabase(application).noteDao()
 
     private val repository = NoteRepository(dao)
@@ -23,7 +24,9 @@ class NoteViewModel(application: Application) : AndroidViewModel(application) {
 
     fun addNote(note: Note) {
         viewModelScope.launch {
+            val existing = repository.getNoteByDate(note.date)
             repository.insert(note)
+            if(existing == null) analytics.logEvent("note_created",null)
         }
     }
 

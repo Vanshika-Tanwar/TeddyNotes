@@ -32,6 +32,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -48,6 +49,7 @@ import com.example.teddynotes.ui.theme.SoftWhite
 import com.example.teddynotes.viewmodel.HomeViewModel
 import com.example.teddynotes.viewmodel.NoteViewModel
 import com.example.teddynotes.viewmodel.UserViewModel
+import com.google.firebase.analytics.FirebaseAnalytics
 import kotlinx.coroutines.launch
 
 @Composable
@@ -57,12 +59,14 @@ fun HomeScreen(
     homeViewModel: HomeViewModel,
     userViewModel: UserViewModel
 ) {
-
+    val context = LocalContext.current
+    val analytics = FirebaseAnalytics.getInstance(context)
     val isOnboarded by userViewModel.isOnboarded.collectAsState()
     val isLoading by userViewModel.isLoading.collectAsState()
     if (!isLoading && !isOnboarded) {
         OnboardingDialog(
             onComplete = { username, dob, email, gender ->
+                analytics.logEvent("onboarding_completed", null)
                 userViewModel.saveUser(username, dob, email, gender)
             }
         )

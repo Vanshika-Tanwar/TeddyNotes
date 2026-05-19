@@ -9,6 +9,9 @@ import com.example.teddynotes.navigation.NavGraph
 import com.example.teddynotes.ui.theme.TeddyNotesTheme
 import com.example.teddynotes.viewmodel.NoteViewModel
 import com.example.teddynotes.viewmodel.NoteViewModelFactory
+import com.google.firebase.Firebase
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.analytics
 
 class MainActivity : ComponentActivity() {
 
@@ -16,6 +19,8 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         installSplashScreen().setKeepOnScreenCondition { false }
+        val analytics = FirebaseAnalytics.getInstance(this)
+        analytics.logEvent("app_opened", null)
         setContent {
             TeddyNotesTheme {
                 NavGraph()

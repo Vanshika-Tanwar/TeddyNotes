@@ -2,6 +2,7 @@ package com.example.teddynotes.navigation
 
 import android.app.Application
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -20,13 +21,15 @@ import com.example.teddynotes.viewmodel.HomeViewModel
 import com.example.teddynotes.viewmodel.NoteViewModel
 import com.example.teddynotes.viewmodel.NoteViewModelFactory
 import com.example.teddynotes.viewmodel.UserViewModel
+import com.google.firebase.analytics.FirebaseAnalytics
 
 @Composable
 fun NavGraph(){
     val navController = rememberNavController()
     val context = LocalContext.current
+    val analytics = remember { FirebaseAnalytics.getInstance(context) }
     val noteViewModel : NoteViewModel = viewModel(
-        factory = NoteViewModelFactory(context.applicationContext as Application)
+        factory = NoteViewModelFactory(context.applicationContext as Application, analytics)
     )
 
     val homeViewModel: HomeViewModel = viewModel()
